@@ -64,7 +64,9 @@ The text records in `results/`:
 
 `scrub.py` prints its own record of the three conditions (vocabulary size,
 mean sequence length, replaced tokens, and the substring rules) each time it
-runs.
+runs. `results/scrub.txt` is the record of the condition build used in the
+paper, with its absolute paths made relative to the repository root and no
+other change.
 
 ## Setup
 

@@ -1,0 +1,149 @@
+==============================================================================
+LETHE: corpus scrubbing pipeline
+==============================================================================
+python : 3.12.14
+numpy  : 2.5.2
+output : data/derived
+
+SCRUB replaces a token with SYM when it is a C++ mangled symbol
+(_Z, __Z, j___Z), or carries 'bad'/'good'/CWE<digits> in a symbol
+name, or is test-harness scaffolding. The bad/good test applies to
+every token position, not only call targets, because operand names
+such as [rbp+dataBadBuffer] leak the label too. Pure numeric and
+hex immediates are guarded so a constant like 0BADh is preserved.
+MASK additionally replaces recognized C library names with LIBFN.
+
+==============================================================================
+FILE: JULIET  (mne-opr-desp-juliet-labelled.pkl)
+==============================================================================
+  samples : 83,326
+
+  --- RAW ---
+    vocabulary size        :      232,530
+    total tokens           :  159,150,272
+    mean sequence length   :      1909.97
+    tokens replaced        :            0 (0.00% of all tokens)
+    written                : data/derived/juliet-raw.pkl.gz (91,721,655 bytes)
+    substring rules (majority baseline 50.00%):
+      predict 1 if 'bad'                    97.93%
+      predict 1 if 'bad' and not 'good'     99.96%
+      predict 0 if 'good'                   99.96%
+
+  --- SCRUB ---
+    vocabulary size        :       22,883
+    total tokens           :  159,150,272
+    mean sequence length   :      1909.97
+    tokens replaced        :    2,660,721 (1.67% of all tokens)
+      by harness  :      322,313
+      by leaky    :      336,214
+      by mangled  :    2,002,194
+    distinct token forms replaced : 209,648
+    written                : data/derived/juliet-scrub.pkl.gz (71,687,224 bytes)
+    substring rules (majority baseline 50.00%):
+      predict 1 if 'bad'                    50.00%
+      predict 1 if 'bad' and not 'good'     50.00%
+      predict 0 if 'good'                   50.00%
+    CHECK: worst rule 50.00% vs baseline 50.00%, delta +0.00 pts => PASS
+
+  --- MASK ---
+    vocabulary size        :       22,819
+    total tokens           :  159,150,272
+    mean sequence length   :      1909.97
+    tokens replaced        :    5,105,055 (3.21% of all tokens)
+      by harness  :      322,313
+      by leaky    :      336,214
+      by libfn    :    2,444,334
+      by mangled  :    2,002,194
+    distinct token forms replaced : 209,713
+    written                : data/derived/juliet-mask.pkl.gz (70,918,416 bytes)
+    substring rules (majority baseline 50.00%):
+      predict 1 if 'bad'                    50.00%
+      predict 1 if 'bad' and not 'good'     50.00%
+      predict 0 if 'good'                   50.00%
+    CHECK: worst rule 50.00% vs baseline 50.00%, delta +0.00 pts => PASS
+
+  MASK: recognized C library names actually present (65):
+    accept          atof            atoi            bind            calloc          close         
+    connect         execl           execlp          exit            fclose          fgets         
+    fopen           fprintf         fputs           fread           free            fscanf        
+    fseek           fwrite          getenv          gets            iswxdigit       isxdigit      
+    listen          malloc          memcpy          memmove         memset          open          
+    pclose          popen           printf          puts            rand            realloc       
+    recv            remove          rename          scanf           send            snprintf      
+    socket          srand           sscanf          strcat          strchr          strcmp        
+    strcpy          strdup          strlen          strncat         strncpy         strtol        
+    strtoul         swscanf         system          time            unlink          vprintf       
+    wcscpy          wcslen          wmemset         wprintf         write         
+
+==============================================================================
+FILE: NDSS  (mne-opr-desp-ndss-labelled.pkl)
+==============================================================================
+  samples : 14,166
+
+  --- RAW ---
+    vocabulary size        :        5,164
+    total tokens           :    1,943,106
+    mean sequence length   :       137.17
+    tokens replaced        :            0 (0.00% of all tokens)
+    written                : data/derived/ndss-raw.pkl.gz (1,180,294 bytes)
+    substring rules (majority baseline 85.91%):
+      predict 1 if 'bad'                    49.58%
+      predict 1 if 'bad' and not 'good'     44.94%
+      predict 0 if 'good'                   85.80%
+
+  --- SCRUB ---
+    vocabulary size        :        2,272
+    total tokens           :    1,943,106
+    mean sequence length   :       137.17
+    tokens replaced        :       20,950 (1.08% of all tokens)
+      by harness  :       12,388
+      by leaky    :        8,006
+      by mangled  :          556
+    distinct token forms replaced : 2,893
+    written                : data/derived/ndss-scrub.pkl.gz (1,086,933 bytes)
+    substring rules (majority baseline 85.91%):
+      predict 1 if 'bad'                    14.09%
+      predict 1 if 'bad' and not 'good'     14.09%
+      predict 0 if 'good'                   85.91%
+    CHECK: worst rule 85.91% vs baseline 85.91%, delta +0.00 pts => PASS
+
+  --- MASK ---
+    vocabulary size        :        2,217
+    total tokens           :    1,943,106
+    mean sequence length   :       137.17
+    tokens replaced        :       58,814 (3.03% of all tokens)
+      by harness  :       12,388
+      by leaky    :        8,006
+      by libfn    :       37,864
+      by mangled  :          556
+    distinct token forms replaced : 2,949
+    written                : data/derived/ndss-mask.pkl.gz (1,039,256 bytes)
+    substring rules (majority baseline 85.91%):
+      predict 1 if 'bad'                    14.09%
+      predict 1 if 'bad' and not 'good'     14.09%
+      predict 0 if 'good'                   85.91%
+    CHECK: worst rule 85.91% vs baseline 85.91%, delta +0.00 pts => PASS
+
+  MASK: recognized C library names actually present (28):
+    alloca          calloc          fclose          fgets           fgetws          fopen         
+    fprintf         free            fscanf          getenv          malloc          memcpy        
+    memmove         memset          printf          puts            rand            snprintf      
+    strcat          strcpy          strlen          strncat         strncpy         wcscpy        
+    wcslen          wcsncat         wcsncpy         wmemset       
+
+==============================================================================
+SUMMARY
+==============================================================================
+  file     cond        vocab         tokens  mean len     replaced  worst rule  baseline
+  juliet   RAW       232,530    159,150,272    1910.0            0      99.96%    50.00%
+  juliet   SCRUB      22,883    159,150,272    1910.0    2,660,721      50.00%    50.00%
+  juliet   MASK       22,819    159,150,272    1910.0    5,105,055      50.00%    50.00%
+  ndss     RAW         5,164      1,943,106     137.2            0      85.80%    85.91%
+  ndss     SCRUB       2,272      1,943,106     137.2       20,950      85.91%    85.91%
+  ndss     MASK        2,217      1,943,106     137.2       58,814      85.91%    85.91%
+
+  Vocabulary collapse check:
+    Juliet RAW   : 232,530
+    Juliet SCRUB : 22,883  (9.84% of RAW)
+    NDSS RAW     : 5,164  (reference scale)
+    Juliet SCRUB is 4.4x NDSS scale; the symbol explosion is gone.
