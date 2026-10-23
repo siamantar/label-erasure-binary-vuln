@@ -1,0 +1,28 @@
+{
+  "run_id": "lr-juliet-RAW-template-ml256-ss0",
+  "status": "done",
+  "model": "lr",
+  "config": {
+    "file": "juliet",
+    "cond": "RAW",
+    "max_len": 256,
+    "split_mode": "template",
+    "split_seed": 0,
+    "shuffle_labels": false,
+    "min_df": 5
+  },
+  "meta": {
+    "n_before": 83326,
+    "n_after": 83326,
+    "n_train": 56824,
+    "n_test": 26502,
+    "group_kind": "template",
+    "n_groups": 339,
+    "features": 18916,
+    "majority_class": 1,
+    "baseline": 47.181344804165725
+  },
+  "test_acc": 85.67655271300279,
+  "train_acc": 91.99633957482753,
+  "elapsed": 6.6618274960001145
+}

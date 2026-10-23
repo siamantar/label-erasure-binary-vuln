@@ -1,0 +1,28 @@
+{
+  "run_id": "lr-ndss-RAW-cwe-ml2048",
+  "status": "done",
+  "model": "lr",
+  "config": {
+    "file": "ndss",
+    "cond": "RAW",
+    "max_len": 2048,
+    "split_mode": "cwe",
+    "split_seed": null,
+    "shuffle_labels": false,
+    "min_df": 5
+  },
+  "meta": {
+    "n_before": 14166,
+    "n_after": 11362,
+    "n_train": 8105,
+    "n_test": 3257,
+    "group_kind": "cwe",
+    "n_groups": 13,
+    "features": 6027,
+    "majority_class": 1,
+    "baseline": 82.19220141234264
+  },
+  "test_acc": 85.93797973595333,
+  "train_acc": 94.46020974706971,
+  "elapsed": 0.4765040969996335
+}

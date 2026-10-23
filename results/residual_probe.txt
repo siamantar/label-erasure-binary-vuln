@@ -1,0 +1,15 @@
+Residual structural signal after SCRUB: can length and SYM/LIBFN
+counts alone predict the label, with no lexical features at all?
+
+JULIET  SCRUB  4 structural features only: held-out  54.40%  baseline  52.71%  lift  +1.69
+        mean len   label0=  1951.0  label1=  1964.1
+        mean SYM   label0=    34.0  label1=    32.9
+JULIET  MASK   4 structural features only: held-out  59.81%  baseline  52.71%  lift  +7.10
+        mean len   label0=  1951.0  label1=  1964.1
+        mean SYM   label0=    34.0  label1=    32.9
+NDSS    SCRUB  4 structural features only: held-out  81.29%  baseline  81.29%  lift  +0.00
+        mean len   label0=   141.5  label1=   151.3
+        mean SYM   label0=     1.6  label1=     1.5
+NDSS    MASK   4 structural features only: held-out  79.93%  baseline  79.83%  lift  +0.10
+        mean len   label0=   142.4  label1=   148.4
+        mean SYM   label0=     1.6  label1=     1.5

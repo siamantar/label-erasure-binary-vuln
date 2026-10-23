@@ -1,0 +1,51 @@
+========================================================================================================
+STEP 5d: WHERE EACH REPORTED FIGURE SITS IN THE PARTITION DISTRIBUTION
+========================================================================================================
+  Reference distribution, Juliet SCRUB BiGRU at max_len 256 over 10 CWE partitions:
+    mean 82.33%, std 3.06, range [77.85, 86.73]
+    partition means sorted: [77.85, 78.77, 79.69, 80.33, 82.16, 83.51, 84.18, 84.21, 85.88, 86.73]
+
+  model  file    cond          split       part  n         reported vs 10-partition juliet SCRUB bigru dist.    
+  bigru  juliet  MASK          cwe        20260902  3   88.66 +/- 0.57 z=+2.07 vs SCRUB dist (different condition, indicative only)
+  bigru  juliet  MASK-matched  cwe        20260902  3   88.66 +/- 0.57 z=+2.07 vs SCRUB dist (different condition, indicative only)
+  bigru  juliet  RAW           cwe        20260902  3   91.26 +/- 0.60 z=+2.92 vs SCRUB dist (different condition, indicative only)
+  bigru  juliet  RAW-matched   cwe        20260902  3   89.48 +/- 0.68 z=+2.34 vs SCRUB dist (different condition, indicative only)
+  bigru  juliet  SCRUB         cwe        20260902  3   88.85 +/- 0.96 z=+2.13, above all 10 partition means       
+  bigru  juliet  MASK          template       0  3   84.41 +/- 0.85 different corpus/model/split; distribution not measured
+  bigru  juliet  MASK-matched  template       0  3   84.41 +/- 0.85 different corpus/model/split; distribution not measured
+  bigru  juliet  RAW           template       0  3   86.68 +/- 0.84 different corpus/model/split; distribution not measured
+  bigru  juliet  RAW-matched   template       0  3   85.60 +/- 1.13 different corpus/model/split; distribution not measured
+  bigru  juliet  SCRUB         template       0  3   84.52 +/- 0.05 different corpus/model/split; distribution not measured
+  bigru  juliet  SCRUB         template       1  3   83.25 +/- 0.00 different corpus/model/split; distribution not measured
+  bigru  juliet  SCRUB         template       2  3   86.18 +/- 0.29 different corpus/model/split; distribution not measured
+  bigru  juliet  SCRUB         template       3  3   82.42 +/- 0.63 different corpus/model/split; distribution not measured
+  bigru  juliet  SCRUB         template       4  3   79.17 +/- 0.72 different corpus/model/split; distribution not measured
+  bigru  juliet  SCRUB         template       5  3   88.32 +/- 0.30 different corpus/model/split; distribution not measured
+  bigru  juliet  SCRUB         template       6  3   81.24 +/- 0.76 different corpus/model/split; distribution not measured
+  bigru  juliet  SCRUB         template       7  3   82.88 +/- 0.36 different corpus/model/split; distribution not measured
+  bigru  juliet  SCRUB         template       8  3   82.58 +/- 0.24 different corpus/model/split; distribution not measured
+  bigru  juliet  SCRUB         template       9  3   81.64 +/- 0.86 different corpus/model/split; distribution not measured
+  bigru  ndss    MASK          cwe        20260902  3   84.38 +/- 0.84 different corpus/model/split; distribution not measured
+  bigru  ndss    MASK-matched  cwe        20260902  3   84.38 +/- 0.92 different corpus/model/split; distribution not measured
+  bigru  ndss    RAW           cwe        20260902  3   86.67 +/- 0.65 different corpus/model/split; distribution not measured
+  bigru  ndss    RAW-matched   cwe        20260902  3   85.32 +/- 0.39 different corpus/model/split; distribution not measured
+  bigru  ndss    SCRUB         cwe        20260902  3   84.64 +/- 0.46 different corpus/model/split; distribution not measured
+  lr     juliet  MASK          cwe        20260902  1      87.54       different corpus/model/split; distribution not measured
+  lr     juliet  MASK-matched  cwe        20260902  1      87.54       different corpus/model/split; distribution not measured
+  lr     juliet  RAW           cwe        20260902  1      89.59       different corpus/model/split; distribution not measured
+  lr     juliet  RAW-matched   cwe        20260902  1      89.57       different corpus/model/split; distribution not measured
+  lr     juliet  SCRUB         cwe        20260902  1      87.02       different corpus/model/split; distribution not measured
+  lr     juliet  MASK          template       0  1      81.71       different corpus/model/split; distribution not measured
+  lr     juliet  MASK-matched  template       0  1      81.71       different corpus/model/split; distribution not measured
+  lr     juliet  RAW           template       0  1      85.68       different corpus/model/split; distribution not measured
+  lr     juliet  RAW-matched   template       0  1      83.65       different corpus/model/split; distribution not measured
+  lr     juliet  SCRUB         template       0  1      81.64       different corpus/model/split; distribution not measured
+  lr     ndss    MASK          cwe        20260902  1      82.92       different corpus/model/split; distribution not measured
+  lr     ndss    MASK-matched  cwe        20260902  1      83.63       different corpus/model/split; distribution not measured
+  lr     ndss    RAW           cwe        20260902  1      85.94       different corpus/model/split; distribution not measured
+  lr     ndss    RAW-matched   cwe        20260902  1      83.67       different corpus/model/split; distribution not measured
+  lr     ndss    SCRUB         cwe        20260902  1      83.71       different corpus/model/split; distribution not measured
+
+  Every 'cwe' row above uses the single canonical partition, seed 20260902.
+  Its BiGRU Juliet SCRUB value sits ABOVE the maximum of the 10 measured
+  partitions, so it is an unusually favourable draw, not a typical one.

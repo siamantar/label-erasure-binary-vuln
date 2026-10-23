@@ -1,0 +1,9 @@
+# Pinned from the environment that produced results/ (Python 3.12.14).
+# torch 2.13.0 is the default PyPI build; install the wheel that matches
+# your CUDA version if you train on a GPU.
+joblib==1.6.0
+matplotlib==3.11.1
+numpy==2.5.2
+scikit-learn==1.9.0
+threadpoolctl==3.6.0
+torch==2.13.0

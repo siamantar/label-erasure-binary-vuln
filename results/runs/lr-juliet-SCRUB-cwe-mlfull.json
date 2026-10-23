@@ -1,0 +1,28 @@
+{
+  "run_id": "lr-juliet-SCRUB-cwe-mlfull",
+  "status": "done",
+  "model": "lr",
+  "config": {
+    "file": "juliet",
+    "cond": "SCRUB",
+    "max_len": 0,
+    "split_mode": "cwe",
+    "split_seed": null,
+    "shuffle_labels": false,
+    "min_df": 5
+  },
+  "meta": {
+    "n_before": 83326,
+    "n_after": 57227,
+    "n_train": 36077,
+    "n_test": 21150,
+    "group_kind": "cwe",
+    "n_groups": 82,
+    "features": 63462,
+    "majority_class": 1,
+    "baseline": 52.70921985815603
+  },
+  "test_acc": 97.00709219858156,
+  "train_acc": 98.93283809629403,
+  "elapsed": 28.620621259000472
+}

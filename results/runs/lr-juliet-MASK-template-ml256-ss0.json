@@ -1,0 +1,28 @@
+{
+  "run_id": "lr-juliet-MASK-template-ml256-ss0",
+  "status": "done",
+  "model": "lr",
+  "config": {
+    "file": "juliet",
+    "cond": "MASK",
+    "max_len": 256,
+    "split_mode": "template",
+    "split_seed": 0,
+    "shuffle_labels": false,
+    "min_df": 5
+  },
+  "meta": {
+    "n_before": 83326,
+    "n_after": 57227,
+    "n_train": 39506,
+    "n_test": 17721,
+    "group_kind": "template",
+    "n_groups": 339,
+    "features": 13542,
+    "majority_class": 1,
+    "baseline": 53.27013148242199
+  },
+  "test_acc": 81.70532137012584,
+  "train_acc": 89.77876778210904,
+  "elapsed": 4.316258476999792
+}

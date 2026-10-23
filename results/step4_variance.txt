@@ -1,0 +1,62 @@
+======================================================================================
+STEP 4: VARIANCE COMPONENTS AND CONTROLS
+======================================================================================
+
+### 4a. Random-label control, CWE-disjoint (train-fold shuffle, true test labels)
+
+  file     accs                           mean    std  baseline    lift
+  juliet   [52.71, 52.71, 52.71]        52.71%  0.00    52.71%  +0.00
+  ndss     [81.29, 81.29, 81.29]        81.29%  0.00    81.29%  +0.00
+  Verdict: lift at or below zero means no leak.
+
+### 4b. CWE partition variance (random-cwe, 10 partitions)
+
+   part  n     mean  seed std  baseline    lift   test n   tpl
+      1  3   85.88%     0.39    53.71% +32.17   21,359      
+      2  3   86.73%     1.20    51.77% +34.96   17,728      
+      3  3   82.16%     0.45    61.04% +21.13    9,653      
+      4  3   79.69%     1.26    55.09% +24.60   19,380      
+      5  3   84.18%     0.70    54.51% +29.67   16,020      
+      6  3   77.85%     0.85    54.52% +23.33   14,495      
+      7  3   84.21%     0.91    57.77% +26.44   15,031      
+      8  3   78.77%     0.57    52.61% +26.16   17,049      
+      9  3   83.51%     1.28    54.18% +29.34   15,699      
+     10  3   80.33%     0.40    56.90% +23.43   13,422      
+
+  partitions 10
+  mean within-partition seed std : 0.802
+  std of partition means         : 3.056
+  ratio between/within           : 3.81x  -> PARTITION variance dominates
+  accuracy across partitions     : 82.33% [77.85-86.73]
+  lift across partitions         : +27.12 +/- 4.35
+
+### 4c. TEMPLATE partition variance (10 partitions)
+
+   part  n     mean  seed std  baseline    lift   test n   tpl
+      0  3   84.52%     0.05    53.27% +31.25   17,721   116
+      1  3   83.25%     0.00    50.39% +32.86   20,147   132
+      2  3   86.18%     0.29    54.36% +31.82   18,656   137
+      3  3   82.42%     0.63    52.40% +30.02   18,023   108
+      4  3   79.17%     0.72    56.84% +22.32   18,361   119
+      5  3   88.32%     0.30    51.32% +37.00   17,598    87
+      6  3   81.24%     0.76    55.94% +25.30   19,092    99
+      7  3   82.88%     0.36    56.23% +26.66   17,826    53
+      8  3   82.58%     0.24    54.43% +28.15   17,776   116
+      9  3   81.64%     0.86    57.81% +23.82   17,845   110
+
+  partitions 10
+  mean within-partition seed std : 0.422
+  std of partition means         : 2.593
+  ratio between/within           : 6.14x  -> PARTITION variance dominates
+  accuracy across partitions     : 83.22% [79.17-88.32]
+  lift across partitions         : +28.92 +/- 4.52
+
+### 4d. The template-disjoint drop, with a partition-level error bar
+
+  CWE-disjoint      accuracy 82.33% +/- 3.06 (partition std)
+  template-disjoint accuracy 83.22% +/- 2.59 (partition std)
+  drop -0.89 points, standard error of the difference 1.27
+  drop in LIFT over each fold's own baseline: -1.80 points
+
+  For comparison, the single-partition figure reported after P2 was 4.33
+  points with a seed std of about 0.96.

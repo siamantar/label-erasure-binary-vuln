@@ -1,0 +1,68 @@
+==============================================================================
+LETHE: leak position analysis
+==============================================================================
+python : 3.12.14
+numpy  : 2.5.2
+
+Leak token definition:
+  normalized (lowercased) token that either matches cwe\d+, or
+  contains 'bad' or 'good' while not being a pure numeric/hex
+  immediate such as 0BADh.
+
+==============================================================================
+FILE: JULIET  (mne-opr-desp-juliet-labelled.pkl)
+==============================================================================
+  samples                : 83,326
+  mean sequence length   : 1910.0
+  hex immediates spelling bad/good, excluded by guard : 0
+
+  LEAK PRESENCE
+    at least one leak token anywhere        :  83,326 / 83,326 = 100.00%
+    at least one leak token in first 256    :  28,430 / 83,326 =  34.12%
+    at least one leak token in first 128    :  19,899 / 83,326 =  23.88%
+    no leak token at all                    :       0 / 83,326 =   0.00%
+
+  POSITION OF FIRST LEAK TOKEN (samples that have one)
+    count   : 83,326
+    min     : 1
+    median  : 367.0
+    p90    : 1017.0
+    p95    : 1224.0
+    p99    : 4775.2
+    max     : 12,214
+
+  SUBSTRING RULES: FULL SEQUENCE vs 256-TOKEN PREFIX
+    majority-class baseline : 50.00%
+    rule                                   full seq   256 prefix
+    predict 1 if 'bad' present               97.93%       62.83%
+    predict 1 if 'bad' and not 'good'        99.96%       62.98%
+    predict 0 if 'good' present              99.96%       70.36%
+
+==============================================================================
+FILE: NDSS  (mne-opr-desp-ndss-labelled.pkl)
+==============================================================================
+  samples                : 14,166
+  mean sequence length   : 137.2
+  hex immediates spelling bad/good, excluded by guard : 0
+
+  LEAK PRESENCE
+    at least one leak token anywhere        :   5,707 / 14,166 =  40.29%
+    at least one leak token in first 256    :   5,705 / 14,166 =  40.27%
+    at least one leak token in first 128    :   5,397 / 14,166 =  38.10%
+    no leak token at all                    :   8,459 / 14,166 =  59.71%
+
+  POSITION OF FIRST LEAK TOKEN (samples that have one)
+    count   : 5,707
+    min     : 9
+    median  : 58.0
+    p90    : 100.0
+    p95    : 130.0
+    p99    : 188.0
+    max     : 275
+
+  SUBSTRING RULES: FULL SEQUENCE vs 256-TOKEN PREFIX
+    majority-class baseline : 85.91%
+    rule                                   full seq   256 prefix
+    predict 1 if 'bad' present               49.58%       49.57%
+    predict 1 if 'bad' and not 'good'        44.94%       44.92%
+    predict 0 if 'good' present              85.80%       85.80%

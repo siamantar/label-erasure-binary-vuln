@@ -1,0 +1,28 @@
+{
+  "run_id": "lr-juliet-SCRUB-random-cwe-ml256-ss1",
+  "status": "done",
+  "model": "lr",
+  "config": {
+    "file": "juliet",
+    "cond": "SCRUB",
+    "max_len": 256,
+    "split_mode": "random-cwe",
+    "split_seed": 1,
+    "shuffle_labels": false,
+    "min_df": 5
+  },
+  "meta": {
+    "n_before": 83326,
+    "n_after": 57227,
+    "n_train": 35868,
+    "n_test": 21359,
+    "group_kind": "cwe",
+    "n_groups": 82,
+    "features": 12211,
+    "majority_class": 1,
+    "baseline": 53.710379699424124
+  },
+  "test_acc": 83.33255302214523,
+  "train_acc": 88.9344262295082,
+  "elapsed": 4.088449584996852
+}

@@ -1,0 +1,28 @@
+{
+  "run_id": "lr-ndss-MASK-matched-cwe-ml256",
+  "status": "done",
+  "model": "lr",
+  "config": {
+    "file": "ndss",
+    "cond": "MASK-matched",
+    "max_len": 256,
+    "split_mode": "cwe",
+    "split_seed": null,
+    "shuffle_labels": false,
+    "min_df": 5
+  },
+  "meta": {
+    "n_before": 14166,
+    "n_after": 8153,
+    "n_train": 5716,
+    "n_test": 2437,
+    "group_kind": "cwe",
+    "n_groups": 13,
+    "features": 5115,
+    "majority_class": 1,
+    "baseline": 81.28846942962659
+  },
+  "test_acc": 83.62741075092327,
+  "train_acc": 94.6815955213436,
+  "elapsed": 0.3398685279989877
+}

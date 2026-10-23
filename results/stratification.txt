@@ -1,0 +1,86 @@
+Polarity-stratified assignment: fold class balance.
+
+Produced by:  python template_split.py --validate --cond <COND>
+on 2026-09-03 14:12:18. The validator contains no write calls; it only
+prints, so this capture is the first time these figures persist to a file.
+
+Read the worst dev column. Compare unstratified against stratified WITHIN
+one condition. Comparing across conditions is not a stratification effect,
+because RAW and SCRUB differ in deduplication and in class balance.
+
+  RAW   : 10.1 -> 5.8  points, improvement 4.3
+  SCRUB : 17.6 -> 10.9 points, improvement 6.7
+
+Every template-split experiment in this project ran on SCRUB, so the SCRUB
+row is the one the paper should quote.
+
+================================================================================
+CONDITION: RAW
+================================================================================
+==============================================================================
+SPLIT VALIDATION  juliet/RAW  key=template
+==============================================================================
+  deduplicated samples : 83,326
+  overall class balance: 50.00% positive
+
+  NAIVE KEY (whole description)
+    templates            : 806
+    class-pure templates : 806 (100.0%)  <-- this is why it fails
+
+  KEY: last 'and' segment (sink)
+    distinct keys        : 339
+    both-class keys      : 66 (19.5% of keys)
+    samples they cover   : 47,412 (56.9% of samples)
+    size distribution    : max 4,848  p90 864  median 18  min 18
+    polarity buckets:
+      pure0   130 templates   18,849 samples ( 22.6%)
+      pure1   143 templates   17,065 samples ( 20.5%)
+      mixed    66 templates   47,412 samples ( 56.9%)
+
+  FOLD BALANCE over 12 seeds, test_fraction=0.3
+    assignment                      test frac          train pos           test pos  worst dev
+    naive (unstratified)    29.7% [20.2-39.4]  50.7% [45.6-54.3]  48.3% [40.2-60.1]      10.1
+    polarity-stratified     31.6% [30.5-33.6]  50.1% [48.3-52.6]  49.8% [44.2-53.8]       5.8
+
+  Stratified assignment is the shipped default. Lower worst deviation is better.
+
+  DISJOINTNESS CHECK (seed 0)
+    test fold: 101 keys, 26,502 samples (31.8%), positive rate 47.18%
+    train templates 238, test templates 101, overlap 0
+    PASS: no template appears in both folds
+
+================================================================================
+CONDITION: SCRUB
+================================================================================
+==============================================================================
+SPLIT VALIDATION  juliet/SCRUB  key=template
+==============================================================================
+  deduplicated samples : 57,227
+  overall class balance: 55.20% positive
+
+  NAIVE KEY (whole description)
+    templates            : 806
+    class-pure templates : 806 (100.0%)  <-- this is why it fails
+
+  KEY: last 'and' segment (sink)
+    distinct keys        : 339
+    both-class keys      : 66 (19.5% of keys)
+    samples they cover   : 30,769 (53.8% of samples)
+    size distribution    : max 2,392  p90 602  median 13  min 1
+    polarity buckets:
+      pure0   130 templates   13,848 samples ( 24.2%)
+      pure1   143 templates   12,610 samples ( 22.0%)
+      mixed    66 templates   30,769 samples ( 53.8%)
+
+  FOLD BALANCE over 12 seeds, test_fraction=0.3
+    assignment                      test frac          train pos           test pos  worst dev
+    naive (unstratified)    30.0% [22.7-39.1]  55.8% [50.4-59.5]  54.1% [45.4-67.6]      17.6
+    polarity-stratified     32.0% [30.8-35.2]  55.3% [52.6-57.8]  55.1% [50.4-60.9]      10.9
+
+  Stratified assignment is the shipped default. Lower worst deviation is better.
+
+  DISJOINTNESS CHECK (seed 0)
+    test fold: 116 keys, 17,721 samples (31.0%), positive rate 53.27%
+    train templates 223, test templates 116, overlap 0
+    PASS: no template appears in both folds
+

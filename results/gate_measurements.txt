@@ -1,0 +1,62 @@
+Step 5a gate measurements.
+
+Transcribed from results/sessions.md, sessions 2 and 11-14. Not re-measured.
+These figures existed only inside prose in that file and nowhere machine
+readable, which is why they are captured here.
+
+SOURCE, verbatim from results/sessions.md (Sessions 11-14, Step 5):
+
+    Gate cell: lr 1e-3 unchanged from the BiGRU, no tuning needed. Peak VRAM
+    3.11 GB of 15.9 GiB. 19.6 s per epoch against the BiGRU's 7.0 s, so 2.8x
+    more expensive per epoch, not cheaper. GPU during transformer training:
+    1905/2002/1882 MHz, 98/99/98 percent utilization, 129/130/129 W. The BiGRU
+    ran at 48-56 percent and 2.75 GHz, so the transformer is compute-bound where
+    the recurrence was launch-bound.
+
+SOURCE, verbatim from results/sessions.md (Session 2, BiGRU):
+
+    GPU during training, three samples 10 s apart: 2752/2745/2760 MHz SM clock,
+    48/56/50 percent utilization, 121.6/126.0/121.0 W, 62/64/65 C. High clock at
+    half utilization means the recurrence is launch-bound, not compute-bound.
+
+TABULATED
+
+  Gate cell: Juliet SCRUB, CWE-disjoint, random-cwe partition 1, model seed 0,
+  max_len 256, batch 190. Learning rate 1e-3 for both architectures; the
+  transformer needed no tuning.
+
+  Peak VRAM
+    transformer   3.11 GB   of 15.9 GiB available
+    BiGRU         not restated in sessions.md for the gate cell; the value
+                  recorded elsewhere in the project is 1.45 GiB at max_len 256
+
+  Seconds per epoch, Juliet at max_len 256
+    transformer   19.6 s
+    BiGRU          7.0 s
+    ratio          2.8x, the transformer is more expensive, not cheaper
+
+  GPU samples, three per architecture, 10 s apart
+
+    transformer   SM clock MHz     1905    2002    1882
+                  utilization %      98      99      98
+                  power W           129     130     129
+                  temperature C     not recorded in sessions.md
+
+    BiGRU         SM clock MHz     2752    2745    2760
+                  utilization %      48      56      50
+                  power W         121.6   126.0   121.0
+                  temperature C      62      64      65
+
+INTERPRETATION AS RECORDED
+
+  The transformer saturates the GPU at 98 to 99 percent while its clock sits
+  around 1.9 GHz, so it is compute-bound. The BiGRU idles at roughly half
+  utilization while holding 2.75 GHz, so the recurrence is launch-bound: the
+  per-timestep kernels are too small to fill the device and the sequential
+  dependency prevents overlap.
+
+KNOWN GAP
+
+  Transformer temperature samples were taken but sessions.md records only
+  clock, utilization, and power for that architecture. The three temperature
+  readings are not preserved in any file and are not reconstructed here.

@@ -1,0 +1,28 @@
+{
+  "run_id": "lr-ndss-RAW-cwe-ml256",
+  "status": "done",
+  "model": "lr",
+  "config": {
+    "file": "ndss",
+    "cond": "RAW",
+    "max_len": 256,
+    "split_mode": "cwe",
+    "split_seed": null,
+    "shuffle_labels": false,
+    "min_df": 5
+  },
+  "meta": {
+    "n_before": 14166,
+    "n_after": 11362,
+    "n_train": 8105,
+    "n_test": 3257,
+    "group_kind": "cwe",
+    "n_groups": 13,
+    "features": 5969,
+    "majority_class": 1,
+    "baseline": 82.19220141234264
+  },
+  "test_acc": 85.93797973595333,
+  "train_acc": 94.48488587291796,
+  "elapsed": 0.47117564200198103
+}

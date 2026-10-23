@@ -5,3 +5,9 @@ __pycache__/
 *.pyc
 *.pt
 *.pkl
+# Derived corpora written by scrub.py, partial downloads, checkpoint temp
+# files, and figures rendered by figures/mkfigs.py
+*.pkl.gz
+*.part
+*.pt.tmp
+figures/*.pdf

@@ -1,0 +1,221 @@
+{
+  "run_id": "juliet-SCRUB-template-ml256-s1-ss7",
+  "config": {
+    "file": "juliet",
+    "cond": "SCRUB",
+    "seed": 1,
+    "max_len": 256,
+    "split_mode": "template",
+    "split_seed": 7,
+    "shuffle_labels": false,
+    "shuffle_scope": null,
+    "vocab_cap": 20000,
+    "emb": 256,
+    "hidden": 256,
+    "batch": 190,
+    "lr": 0.001,
+    "patience": 5,
+    "max_epochs": 150,
+    "val_fraction": 0.1
+  },
+  "meta": {
+    "n_before": 83326,
+    "n_after": 57227,
+    "n_train": 35461,
+    "n_val": 3940,
+    "n_test": 17826,
+    "group_kind": "template",
+    "n_groups": 339,
+    "vocab_kept": 4392,
+    "vocab_full": 4392,
+    "n_vocab_rows": 4394,
+    "majority_class": 1,
+    "baseline": 56.22685964321777,
+    "labels_shuffled": false,
+    "shuffle_scope": null,
+    "test_groups": [
+      "accept() in the correct order",
+      "add 1 to data, which can cause an overflow",
+      "allocate memory with new [], but incorrectly check the size of the memory to be allocated",
+      "an empty code block has no effect",
+      "an empty while statement has no effect",
+      "assert if n is less than or equal to assert_value",
+      "check for null before attempting to print data",
+      "check if snprintf() fails",
+      "check if sscanf() fails",
+      "close the file handle before reusing it",
+      "copy a string using memcpy without explicit null termination",
+      "copy a string using strncpy() with explicit null termination",
+      "copy data to string using memcpy",
+      "copy int array to data using a loop",
+      "copy int array to data using memmove",
+      "copy int64_t array to data using a loop",
+      "copy string to data using strcpy",
+      "copy twointsstruct array to data using memmove",
+      "correctly check if fgets() failed before trying to use the destination buffer",
+      "correctly check if fprintf() failed",
+      "correctly check if fread() failed",
+      "correctly check if scanf() failed",
+      "data as the second",
+      "deallocate data using delete",
+      "do not dereference a pointer if it is null",
+      "do nothing",
+      "don't allow very large values of intunsigned",
+      "ensure the array index is valid",
+      "ensure there will not be an overflow before multiplying data by 2",
+      "ensure there will not be an overflow before squaring data",
+      "execute command with execl",
+      "execute command with execlp",
+      "if counter reaches a certain value, do something bad",
+      "improperly check the array index by not checking the lower bound",
+      "improperly check the array index by not checking the upper bound",
+      "incorrect number of arguments",
+      "incorrectly check if puts() failed",
+      "incorrectly check if snprintf() failed",
+      "incorrectlycheck if rename() failed",
+      "increment data, which can cause an overflow",
+      "modify the second field of the struct using the field name",
+      "no deallocation of data",
+      "not the data type",
+      "open a temporary file, created with tempnam(), insecurely",
+      "print then free data",
+      "release the lock before acquiring it",
+      "therefore will never catch anything",
+      "use data",
+      "use data after delete",
+      "use fgets() for bounded user input",
+      "validate count before using it as the loop variant in a for loop",
+      "vfprintf with a format string",
+      "vprintf with a format string"
+    ]
+  },
+  "status": "done",
+  "test_acc": 82.82845282172107,
+  "test_loss": 0.8285921037524795,
+  "best_val": 0.1787236533189183,
+  "best_epoch": 11,
+  "epochs_run": 17,
+  "curve": [
+    [
+      0,
+      0.5286371656524251,
+      0.38222736804013324,
+      83.42639593908629,
+      7.327218472000823
+    ],
+    [
+      1,
+      0.3137531051005827,
+      0.34190770260573644,
+      84.84771573604061,
+      7.452229673999682
+    ],
+    [
+      2,
+      0.23451509831098663,
+      0.24491968009677637,
+      89.8730964467005,
+      7.280733856001461
+    ],
+    [
+      3,
+      0.19276131154533732,
+      0.23726371920048284,
+      90.60913705583756,
+      7.464411296998151
+    ],
+    [
+      4,
+      0.1739664568306646,
+      0.22176739697528974,
+      91.49746192893402,
+      7.13588231200265
+    ],
+    [
+      5,
+      0.14493240423025489,
+      0.20244111966360645,
+      92.48730964467005,
+      7.102962060998834
+    ],
+    [
+      6,
+      0.12000757741822543,
+      0.20280266292204108,
+      92.99492385786802,
+      7.282309182999597
+    ],
+    [
+      7,
+      0.10761298736300667,
+      0.19307259061009752,
+      93.02030456852792,
+      7.0015777820008225
+    ],
+    [
+      8,
+      0.108761307594513,
+      0.19436477961273968,
+      93.32487309644671,
+      7.272541221998836
+    ],
+    [
+      9,
+      0.08825512795309162,
+      0.18872832186936123,
+      93.50253807106598,
+      7.1686954380020325
+    ],
+    [
+      10,
+      0.08213992092601573,
+      0.2108701551021053,
+      93.32487309644671,
+      7.189819825001905
+    ],
+    [
+      11,
+      0.07735589610549863,
+      0.1787236533189183,
+      94.49238578680203,
+      7.122347870001249
+    ],
+    [
+      12,
+      0.07127938816681424,
+      0.1877791390201162,
+      93.80710659898477,
+      7.332761670000764
+    ],
+    [
+      13,
+      0.0643144002760646,
+      0.20578184127807617,
+      93.93401015228426,
+      7.11069107000003
+    ],
+    [
+      14,
+      0.06167520889657041,
+      0.20500307373589066,
+      93.68020304568529,
+      7.181128095999156
+    ],
+    [
+      15,
+      0.06165713370032288,
+      0.18720934427329125,
+      94.39086294416244,
+      7.254043409000587
+    ],
+    [
+      16,
+      0.05490635527088641,
+      0.19574648329449185,
+      94.79695431472082,
+      6.951532414001122
+    ]
+  ],
+  "peak_gpu_gb": 1.5124864,
+  "elapsed": 124.42007543599902
+}

@@ -1,0 +1,114 @@
+==============================================================================
+LETHE Stage 1: LR on the first 256 tokens
+==============================================================================
+python 3.12.14  numpy 2.5.2
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
+split: seed=20260902 test_fraction=0.3, asserted against results/ceiling.txt
+threadpool_limits=6 around the LR solve
+
+==============================================================================
+### JULIET / RAW / max_len=256
+==============================================================================
+  dedup      : 83,326 -> 83,326
+  test CWEs  : CWE121, CWE123, CWE127, CWE190, CWE23, CWE401, CWE415, CWE427, CWE476, CWE680, CWE762
+  train      : 52,110  class balance [26055, 26055]
+  test       : 31,216  class balance [15608, 15608]
+  majority class from train = 0, baseline on test = 50.00%
+  features   : 18,730  train nnz 11,090,974  (5.5s)
+  LR fit     : 1.2s, n_iter=58
+
+  RESULT held-out accuracy :  89.59%
+         majority baseline  :  50.00%
+         lift               : +39.59 pts
+         train accuracy     :  90.87%
+
+==============================================================================
+### JULIET / SCRUB / max_len=256
+==============================================================================
+  dedup      : 83,326 -> 57,227
+  test CWEs  : CWE121, CWE123, CWE127, CWE190, CWE23, CWE401, CWE415, CWE427, CWE476, CWE680, CWE762
+  train      : 36,077  class balance [15633, 20444]
+  test       : 21,150  class balance [10002, 11148]
+  majority class from train = 1, baseline on test = 52.71%
+  features   : 13,546  train nnz 7,646,540  (3.8s)
+  LR fit     : 0.5s, n_iter=39
+
+  RESULT held-out accuracy :  87.02%
+         majority baseline  :  52.71%
+         lift               : +34.31 pts
+         train accuracy     :  88.36%
+
+==============================================================================
+### JULIET / MASK / max_len=256
+==============================================================================
+  dedup      : 83,326 -> 57,227
+  test CWEs  : CWE121, CWE123, CWE127, CWE190, CWE23, CWE401, CWE415, CWE427, CWE476, CWE680, CWE762
+  train      : 36,077  class balance [15633, 20444]
+  test       : 21,150  class balance [10002, 11148]
+  majority class from train = 1, baseline on test = 52.71%
+  features   : 13,303  train nnz 7,434,199  (3.8s)
+  LR fit     : 0.6s, n_iter=40
+
+  RESULT held-out accuracy :  87.54%
+         majority baseline  :  52.71%
+         lift               : +34.83 pts
+         train accuracy     :  88.79%
+
+==============================================================================
+### NDSS / RAW / max_len=256
+==============================================================================
+  dedup      : 14,166 -> 11,362
+  test CWEs  : CWE119, CWE122, CWE134
+  train      : 8,105  class balance [851, 7254]
+  test       : 3,257  class balance [580, 2677]
+  majority class from train = 1, baseline on test = 82.19%
+  features   : 5,969  train nnz 1,032,669  (0.4s)
+  LR fit     : 0.0s, n_iter=27
+
+  RESULT held-out accuracy :  85.94%
+         majority baseline  :  82.19%
+         lift               :  +3.75 pts
+         train accuracy     :  94.48%
+
+==============================================================================
+### NDSS / SCRUB / max_len=256
+==============================================================================
+  dedup      : 14,166 -> 8,153
+  test CWEs  : CWE119, CWE122, CWE134
+  train      : 5,716  class balance [504, 5212]
+  test       : 2,437  class balance [456, 1981]
+  majority class from train = 1, baseline on test = 81.29%
+  features   : 5,313  train nnz 786,273  (0.3s)
+  LR fit     : 0.0s, n_iter=19
+
+  RESULT held-out accuracy :  83.71%
+         majority baseline  :  81.29%
+         lift               :  +2.42 pts
+         train accuracy     :  94.56%
+
+==============================================================================
+### NDSS / MASK / max_len=256
+==============================================================================
+  dedup      : 14,166 -> 7,015
+  test CWEs  : CWE119, CWE122, CWE134
+  train      : 4,977  class balance [472, 4505]
+  test       : 2,038  class balance [411, 1627]
+  majority class from train = 1, baseline on test = 79.83%
+  features   : 4,802  train nnz 641,516  (0.3s)
+  LR fit     : 0.0s, n_iter=24
+
+  RESULT held-out accuracy :  82.92%
+         majority baseline  :  79.83%
+         lift               :  +3.09 pts
+         train accuracy     :  94.86%
+
+==============================================================================
+SUMMARY  LR on first 256 tokens
+==============================================================================
+  file     cond    features      acc  baseline     lift  train acc
+  juliet   RAW       18,730   89.59%    50.00%  +39.59     90.87%
+  juliet   SCRUB     13,546   87.02%    52.71%  +34.31     88.36%
+  juliet   MASK      13,303   87.54%    52.71%  +34.83     88.79%
+  ndss     RAW        5,969   85.94%    82.19%   +3.75     94.48%
+  ndss     SCRUB      5,313   83.71%    81.29%   +2.42     94.56%
+  ndss     MASK       4,802   82.92%    79.83%   +3.09     94.86%

@@ -1,0 +1,28 @@
+{
+  "run_id": "lr-juliet-RAW-cwe-ml2048",
+  "status": "done",
+  "model": "lr",
+  "config": {
+    "file": "juliet",
+    "cond": "RAW",
+    "max_len": 2048,
+    "split_mode": "cwe",
+    "split_seed": null,
+    "shuffle_labels": false,
+    "min_df": 5
+  },
+  "meta": {
+    "n_before": 83326,
+    "n_after": 83326,
+    "n_train": 52110,
+    "n_test": 31216,
+    "group_kind": "cwe",
+    "n_groups": 82,
+    "features": 54089,
+    "majority_class": 0,
+    "baseline": 50.0
+  },
+  "test_acc": 99.4201691440287,
+  "train_acc": 99.7524467472654,
+  "elapsed": 28.274163973999748
+}

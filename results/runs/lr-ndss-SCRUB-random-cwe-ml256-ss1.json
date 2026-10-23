@@ -1,0 +1,28 @@
+{
+  "run_id": "lr-ndss-SCRUB-random-cwe-ml256-ss1",
+  "status": "done",
+  "model": "lr",
+  "config": {
+    "file": "ndss",
+    "cond": "SCRUB",
+    "max_len": 256,
+    "split_mode": "random-cwe",
+    "split_seed": 1,
+    "shuffle_labels": false,
+    "min_df": 5
+  },
+  "meta": {
+    "n_before": 14166,
+    "n_after": 8153,
+    "n_train": 4386,
+    "n_test": 3767,
+    "group_kind": "cwe",
+    "n_groups": 13,
+    "features": 4080,
+    "majority_class": 1,
+    "baseline": 92.19538093973985
+  },
+  "test_acc": 93.310326519777,
+  "train_acc": 91.08527131782945,
+  "elapsed": 0.3564834679964406
+}

@@ -1,0 +1,28 @@
+{
+  "run_id": "lr-juliet-MASK-cwe-ml256",
+  "status": "done",
+  "model": "lr",
+  "config": {
+    "file": "juliet",
+    "cond": "MASK",
+    "max_len": 256,
+    "split_mode": "cwe",
+    "split_seed": null,
+    "shuffle_labels": false,
+    "min_df": 5
+  },
+  "meta": {
+    "n_before": 83326,
+    "n_after": 57227,
+    "n_train": 36077,
+    "n_test": 21150,
+    "group_kind": "cwe",
+    "n_groups": 82,
+    "features": 13303,
+    "majority_class": 1,
+    "baseline": 52.70921985815603
+  },
+  "test_acc": 87.53664302600473,
+  "train_acc": 88.79341408653713,
+  "elapsed": 4.438417110000955
+}
