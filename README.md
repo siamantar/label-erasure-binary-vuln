@@ -19,10 +19,10 @@ mangled symbols. On identical test samples, removing that label costs a
 recurrent model less than its own seed variation, so the accuracy that
 remains does not come from leakage. Two further explanations for the
 corpus's difficulty also fail, and accuracy stays roughly 27 points above
-the majority-class baseline under every control the paper applies. Partition
-variance exceeds seed variance by a factor of 3.8 to 6.1 while the field
-reports seed error bars, so readers should not trust small differences on
-this benchmark.
+the majority-class baseline under every control the paper applies. The
+standard deviation across partitions exceeds the standard deviation across
+seeds by a factor of 3.8 to 6.1 while the field reports seed error bars, so
+readers should not trust small differences on this benchmark.
 
 ## What this repository contains
 
@@ -36,7 +36,7 @@ this benchmark.
 | `ceiling.py`, `lr256.py` | Duplicate collisions and the logistic regression on the initial partition |
 | `leak_position.py`, `gate_inspect.py` | Where the label sits in each sequence, and the structure of both corpora |
 | `figures/mkfigs.py` | Renders the two figures of the paper from `results/runs.csv` |
-| `scripts/tables.py` | Computes the statistics of Table 3 and Table 4 from `results/runs.csv` |
+| `scripts/tables.py` | Computes the statistics of Tables 3 to 6 and the input-length figures of Section 4.4 from `results/runs.csv` |
 | `scripts/fetch_data.sh` | Downloads and verifies the two corpora |
 | `results/runs/` | The 189 per-run results, one JSON file per run |
 | `results/runs.csv` | The same 189 runs flattened into one table |
@@ -53,12 +53,12 @@ The text records in `results/`:
 | `RECONCILED.md` | How the per-run results reconcile into the reported figures, including the seed-averaging convention. It refers to some working files that this repository does not include. |
 | `ceiling.txt` | `python ceiling.py` |
 | `lr256.txt` | `python lr256.py` |
-| `leak_position.txt` | `python leak_position.py` |
+| `leak_position.txt` | `python leak_position.py`. Source of the label-position figures in Section 4.4. |
 | `gate_inspect_excerpt.txt` | `python gate_inspect.py`, sections 3b, 3d, 3e, 3f and 3h. The full output also prints complete corpus samples, which this repository does not redistribute. |
 | `stratification.txt` | `python template_split.py --validate --cond RAW` and `--cond SCRUB` |
 | `residual_probe.txt` | The non-lexical control. The analysis command that wrote it is not part of this repository. |
 | `step3a_source_sink_validation.md` | The source-and-sink partition check. Its analysis command is not part of this repository. |
-| `step4_variance.txt` | The variance decomposition and label-permutation control summaries, computed from the per-run results. Its analysis command is not part of this repository. |
+| `step4_variance.txt` | The variance decomposition and label-permutation control summaries, computed from the per-run results. Its analysis command is not part of this repository; `python scripts/tables.py --variance` reproduces its variance figures. |
 | `step5d_retrofit.txt` | Where each initial-partition figure sits in the distribution over ten partitions, computed from the per-run results. Its analysis command is not part of this repository. |
 | `gate_measurements.txt` | GPU and memory measurements transcribed from the run notes |
 
@@ -261,21 +261,34 @@ Check the stored results first:
 cd results && sha256sum -c MANIFEST.sha256 && cd ..
 ```
 
-Table 3 and Table 4:
+Tables 3 to 6 of the paper and the input-length figures of Section 4.4:
 
 ```bash
-python scripts/tables.py
-python scripts/tables.py --per-seed   # Table 4 again for each BiGRU seed
+python scripts/tables.py              # Tables 3 and 4
+python scripts/tables.py --per-seed   # Tables 3 and 4, then Table 4 once per BiGRU seed; the Juliet rows are Table 5
+python scripts/tables.py --variance   # Table 6
+python scripts/tables.py --window     # Section 4.4: logistic regression at 256 tokens, 2,048 tokens and full length
 ```
 
-The script reads only `results/runs.csv`. It keeps the anonymized corpus,
-the ten sampled CWE-disjoint partitions and the 256-token window, and it
-drops the control runs. Table 3 gives, per corpus and model, the mean and
-standard deviation across partitions of accuracy and of the majority-class
-baseline of each test set, and the margin, which is mean accuracy minus mean
-baseline. It averages the BiGRU seeds within each partition first. Table 4
-gives the differences between models paired on partition, with the standard
-error of the paired difference and a 95% interval of 1.96 standard errors.
+The script reads only `results/runs.csv` and drops the control runs. Tables
+3, 4 and 5 keep the anonymized corpus, the ten sampled CWE-disjoint
+partitions and the 256-token window. Table 3 gives, per corpus and model,
+the mean and standard deviation across partitions of accuracy and of the
+majority-class baseline of each test set, and the margin, which is mean
+accuracy minus mean baseline. It averages the BiGRU seeds within each
+partition first. Table 4 gives the differences between models paired on
+partition, with the standard error of the paired difference and a 95%
+interval of 1.96 standard errors. Table 5 repeats the Juliet comparisons
+with the BiGRU restricted to one training seed at a time.
+
+Table 6 covers the BiGRU on the anonymized Juliet corpus at 256 tokens,
+over the ten CWE-disjoint and the ten template-disjoint partitions. For each
+protocol it gives the mean standard deviation across training seeds within a
+partition, the standard deviation of the partition means, their ratio, the
+range of partition means, and the margin over partitions. The `--window`
+option prints the logistic regression on the anonymized corpus and the
+initial partition at three input lengths, with the test-set size at each
+length and the change from 256 tokens to the full sequence.
 
 The two figures:
 

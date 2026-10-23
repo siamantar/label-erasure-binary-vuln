@@ -1,6 +1,7 @@
-"""Table 3 and Table 4 of the paper, computed from results/runs.csv.
+"""Tables 3 to 6 of the paper and the input-length figures of Section 4.4,
+computed from results/runs.csv.
 
-Both tables use the anonymized corpus (condition SCRUB), CWE-disjoint
+Tables 3 and 4 use the anonymized corpus (condition SCRUB), CWE-disjoint
 evaluation over the ten sampled partitions (split_mode random-cwe,
 split_seed 1 to 10), and the 256-token window (max_len 256). Control runs,
 whose run IDs end in -shuffled, -shuftrain, or -struct, are excluded.
@@ -18,7 +19,23 @@ differences divided by the square root of the number of partitions, and the
 95% interval is the mean plus or minus 1.96 standard errors.
 
 With --per-seed, Table 4 is repeated once for each BiGRU training seed, so
-that every model contributes a single run per partition.
+that every model contributes a single run per partition. The Juliet rows of
+that output form Table 5.
+
+With --variance, the script prints Table 6 instead: Juliet, anonymized
+corpus, BiGRU, 256-token window, for the ten CWE-disjoint sampled partitions
+and the ten template-disjoint partitions. Per partition it takes the sample
+standard deviation of accuracy across training seeds, the mean accuracy and
+the mean baseline. It reports the mean of the seed standard deviations, the
+sample standard deviation of the partition means, their ratio, the lowest
+and highest partition mean, and the mean and sample standard deviation over
+partitions of the margin (mean accuracy minus mean baseline).
+
+With --window, the script prints the figures of Section 4.4 instead: the
+logistic regression on the anonymized corpus and the initial CWE-disjoint
+partition at 256 tokens, 2,048 tokens and the full sequence, with accuracy,
+baseline, margin and test-set size for each corpus, and the change in
+accuracy from 256 tokens to the full sequence.
 
 Reads only the CSV. Needs no corpus, no GPU, and no third-party package.
 """
@@ -123,16 +140,111 @@ def table4(data, title, pick):
     print()
 
 
+def read_rows(path):
+    """Every non-control row of the per-run results table."""
+    with open(path, newline="") as f:
+        return [r for r in csv.DictReader(f)
+                if not r["run_id"].endswith(CONTROL_SUFFIXES)]
+
+
+def table6(path):
+    """Variance components over partitions, Juliet, anonymized, BiGRU."""
+    rows = [r for r in read_rows(path)
+            if r["corpus"] == "juliet" and r["condition"] == "SCRUB"
+            and r["arch"] == "bigru" and r["max_len"] == "256"]
+    print("Table 6. Variance components over ten partitions per protocol, "
+          "Juliet, anonymized corpus, BiGRU, 256 tokens.")
+    print("Ratio is the standard deviation of partition means divided by the "
+          "mean seed standard deviation.")
+    print("Margin is the mean and partition standard deviation of accuracy "
+          "minus the majority-class baseline.\n")
+    print(f"  {'Protocol':<18} {'Partitions':>10} {'Seeds':>6} {'Seed SD':>8} "
+          f"{'Partition SD':>13} {'Ratio':>6} {'Accuracy range':>15} "
+          f"{'Margin':>15}")
+    for mode, label in (("random-cwe", "CWE-disjoint"),
+                        ("template", "Template-disjoint")):
+        parts = {}
+        for r in rows:
+            if r["split_mode"] == mode:
+                parts.setdefault(int(r["split_seed"]), []).append(
+                    (float(r["accuracy"]), float(r["fold_baseline"])))
+        if len(parts) != N_PARTITIONS or any(len(v) < 2 for v in parts.values()):
+            sys.exit(f"error: expected {N_PARTITIONS} {mode} partitions with "
+                     f"at least two seeds each in {path}")
+        seed_sd = statistics.mean(statistics.stdev(a for a, _ in v)
+                                  for v in parts.values())
+        means = [statistics.mean(a for a, _ in v) for v in parts.values()]
+        margins = [statistics.mean(a for a, _ in v) -
+                   statistics.mean(b for _, b in v) for v in parts.values()]
+        part_sd = statistics.stdev(means)
+        seeds = ",".join(map(str, sorted({len(v) for v in parts.values()})))
+        rng = f"{min(means):.2f}-{max(means):.2f}"
+        print(f"  {label:<18} {len(parts):>10} {seeds:>6} {seed_sd:8.3f} "
+              f"{part_sd:13.3f} {part_sd / seed_sd:6.2f} {rng:>15} "
+              f"{statistics.mean(margins):+8.2f} +/- "
+              f"{statistics.stdev(margins):4.2f}")
+    print()
+
+
+def window(path):
+    """Logistic regression at three input lengths, initial partition."""
+    rows = [r for r in read_rows(path)
+            if r["arch"] == "lr" and r["split_mode"] == "cwe"
+            and r["condition"] == "SCRUB"]
+    lengths = [("256", "256 tokens"), ("2048", "2,048 tokens"),
+               ("0", "full sequence")]
+    print("Section 4.4. Logistic regression at three input lengths, "
+          "anonymized corpus, CWE-disjoint, initial partition.")
+    print("Margin is accuracy minus the majority-class baseline of the "
+          "test set.\n")
+    print(f"  {'Corpus':<8} {'Input':<14} {'Accuracy':>9} {'Baseline':>9} "
+          f"{'Margin':>8} {'Test samples':>13}")
+    for corpus, clab in CORPORA:
+        got = {}
+        for ml, mlab in lengths:
+            r = [x for x in rows if x["corpus"] == corpus and x["max_len"] == ml]
+            if len(r) != 1:
+                sys.exit(f"error: expected one logistic regression run for "
+                         f"{corpus} at max_len {ml} in {path}, found {len(r)}")
+            r = r[0]
+            got[ml] = r
+            print(f"  {clab:<8} {mlab:<14} {float(r['accuracy']):9.2f} "
+                  f"{float(r['fold_baseline']):9.2f} {float(r['lift']):+8.2f} "
+                  f"{int(r['test_n']):>13,}")
+        same = len({got[ml]["test_n"] for ml, _ in lengths}) == 1
+        gain = float(got["0"]["accuracy"]) - float(got["256"]["accuracy"])
+        print(f"  {clab:<8} full sequence minus 256 tokens: {gain:+.2f} points; "
+              f"same test set at all three lengths: {'yes' if same else 'NO'}")
+    print()
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(
-        description="Compute the statistics of Table 3 and Table 4 from the "
-                    "per-run results in results/runs.csv.")
+        description="Compute the statistics of Tables 3 to 6 and the "
+                    "input-length figures of Section 4.4 from the per-run "
+                    "results in results/runs.csv. Without an option the "
+                    "script prints Tables 3 and 4.")
     ap.add_argument("--runs", default=DEFAULT_RUNS,
                     help="path to the per-run results table "
                          "(default: results/runs.csv in this repository)")
-    ap.add_argument("--per-seed", action="store_true",
-                    help="also repeat Table 4 once per BiGRU training seed")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--per-seed", action="store_true",
+                      help="also repeat Table 4 once per BiGRU training seed; "
+                           "the Juliet rows form Table 5")
+    mode.add_argument("--variance", action="store_true",
+                      help="print Table 6, the variance components, instead")
+    mode.add_argument("--window", action="store_true",
+                      help="print the logistic regression at 256 tokens, "
+                           "2,048 tokens and the full sequence (Section 4.4) "
+                           "instead")
     a = ap.parse_args(argv)
+
+    if a.variance:
+        table6(a.runs)
+        return 0
+    if a.window:
+        window(a.runs)
+        return 0
 
     data = load(a.runs)
     table3(data)
